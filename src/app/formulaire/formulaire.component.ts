@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { finalize, map } from "rxjs/operators"
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { FormService } from './form.service';
+import { Form } from './form';
 
 @Component({
   selector: 'app-formulaire',
@@ -11,13 +12,14 @@ import { FormService } from './form.service';
 export class FormulaireComponent implements OnInit {
 
   title = 'fromulaire du générateur';
+  form : Form;
   generateurForm: FormGroup; 
-  nprojet;
   submitted=false;
+  loading = false;
+  display='none';
 
   constructor(private formbuilder:FormBuilder,public service:FormService){
 
-    
   }
 
   ngOnInit(){
@@ -25,45 +27,73 @@ export class FormulaireComponent implements OnInit {
   this.generateurForm = this.formbuilder.group({
     
     diroctoryproject: ['', Validators.required],
-    nomprojet: ['', Validators.required],
-    nompackage: ['', Validators.required],
-    typebasededonne: ['', Validators.required],
-    lienserveur: ['', Validators.required],
-    port: ['', Validators.required],
-    databaseName: ['', Validators.required],
-    nomutilisateur: ['', Validators.required],
-    motdepasseutilisateur:['', [Validators.required, Validators.minLength(0)]],
+    nomprojet: ['sampleApp', Validators.required],
+    nompackage: ['com.mycompany.myapp', Validators.required],
+    typebasededonne: ['MYSQL', Validators.required],
+    lienserveur: ['localhost:3306', Validators.required],
+    port: ['8080', Validators.required],
+    databaseName: ['mydb', Validators.required],
+    nomutilisateur: ['root', Validators.required],
+    motdepasseutilisateur:[null],
     acceptation: [false, Validators.requiredTrue]
 
-  })
+  });
+
+  this.form = {
+    diroctoryproject: '',
+    nomprojet: '',
+    nompackage: '',
+    typebasededonne: '',
+    lienserveur:'',
+    port: '',
+    databaseName: '',
+    nomutilisateur: '',
+    motdepasseutilisateur :'',
+
   }
 
-  // getter pour un accès facile aux champs de formulaire
-  get f() { return this.generateurForm.controls; }
-  
+  }
 
+  
   onSubmit() {
-    
+    this.mapFormValuesToFormModel();
+
     this.submitted = true;
-    this.service.envoyerformulaire(this.f.diroctoryproject.value,this.f.nomprojet.value,this.f.nompackage.value,this.f.typebasededonne.value,this.f.lienserveur.value,this.f.port.value,this.f.databaseName.value,this.f.nomutilisateur.value,this.f.motdepasseutilisateur.value).subscribe(value => console.log(value));
-    // stop here if form is invalid
-    if (this.generateurForm.invalid) {
-        return;
+    if (this.generateurForm.valid){
+      this.display='block';
+      this.loading = true;
+      this.service.envoyerformulaire(this.form).subscribe(
+    );
     }
 
-    //console.log(this.f.nomprojet.value,this.f.nompackage.value,this.f.typebasededonne.value,this.f.lienserveur.value,this.f.portbd.value,this.f.nomutilisateur.value,this.f.motdepasseutilisateur.value);
-    
- 
-    //alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.generateurForm.value, null, 4));
+    else {
+          // stop here if form is invalid
+      return;
+    } 
 }
 
-  onReset() {
+
+ // getter pour un accès facile aux champs de formulaire
+ get f() { return this.generateurForm.controls; }
+ 
+mapFormValuesToFormModel(){
+  this.form.diroctoryproject = this.f.diroctoryproject.value;
+  this.form.nomprojet = this.f.nomprojet.value;
+  this.form.nompackage = this.f.nompackage.value;
+  this.form.port = this.f.port.value;
+  this.form.typebasededonne = this.f.typebasededonne.value;
+  this.form.lienserveur = this.f.lienserveur.value;
+  this.form.databaseName = this.f.databaseName.value;
+  this.form.motdepasseutilisateur = this.f.motdepasseutilisateur.value;
+}
+
+
+
+onReset() {
     this.submitted = false;
+    this.loading = false;
     this.generateurForm.reset();
 }
-
-folder: string;
-
 
 
 }

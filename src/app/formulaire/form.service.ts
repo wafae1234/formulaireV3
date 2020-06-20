@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Form } from './form';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
-  private fUrl="http://localhost:8080/form";
-  private variable;
+  private fUrl="http://localhost:8081/form";
+
 
   constructor(private http: HttpClient) {}
-    public envoyerformulaire(diroctoryproject:string,nomprojet:string,nompackage:string,typebasededonne:string,lienserveur:string,port:string,databaseName:string,nomutilisateur:string,motdepasse:string)
+  
+    public envoyerformulaire(form : Form): Observable<Form>
     { 
-      this.variable={diroctoryproject:diroctoryproject,nomprjet:nomprojet,nompackage:nompackage,typebasededonne:typebasededonne,lienserveur:lienserveur,port:port,databaseName:databaseName,nomutilisateur:nomutilisateur,motdepasse:motdepasse};
-      console.log(this.variable);
-      return this.http.post<any>(this.fUrl,this.variable);
+     return this.http.post<Form>(this.fUrl,form);
     }
+    message() {
+     return this.http.get<boolean>(this.fUrl);
+    }
+
 }

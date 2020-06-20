@@ -16,16 +16,10 @@
         <br>
         <form [formGroup]="generateurForm" (ngSubmit)="onSubmit()">
 
-          <!-- <div>
-            <label>Emplacement projet :</label>
-            <input class="u-full-width" placeholder="Folder" type="text" [(ngClass)]="folder">
-            <button id="browse" class="button-primary" (click)="browse()">Browse</button>
-            <input id="fileInput" type="file" style="display: none" />
-        </div> -->
 
           <div class="form-group">
             <label>Emplacement projet :</label>
-            <input type="text" class="form-control" formControlName="diroctoryproject" placeholder="diroctoryproject"
+            <input type="text" class="form-control" formControlName="diroctoryproject" placeholder="Project directory path..."
               [ngClass]="{ 'is-invalid': submitted && f.diroctoryproject.errors }" />
             <div *ngIf="submitted && f.diroctoryproject.errors" class="invalid-feedback">
               <div *ngIf="f.diroctoryproject.errors.required">Emplacement projet est obligatoire !</div>
@@ -34,7 +28,7 @@
 
           <div class="form-group">
             <label>Nom projet :</label>
-            <input type="text" class="form-control" formControlName="nomprojet" placeholder="nameApplication"
+            <input type="text" class="form-control" formControlName="nomprojet"
               [ngClass]="{ 'is-invalid': submitted && f.nomprojet.errors }" />
             <div *ngIf="submitted && f.nomprojet.errors" class="invalid-feedback">
               <div *ngIf="f.nomprojet.errors.required">Nom de projet obligatoire </div>
@@ -43,7 +37,7 @@
 
           <div class="form-group">
             <label>Nom de package :</label>
-            <input type="text" class="form-control" formControlName="nompackage" placeholder="com.mycompany.myapp"
+            <input type="text" class="form-control" formControlName="nompackage"
               [ngClass]="{ 'is-invalid': submitted && f.nompackage.errors }" />
             <div *ngIf="submitted && f.nompackage.errors" class="invalid-feedback">
               <div *ngIf="f.nompackage.errors.required">Nom de package obligatoire </div>
@@ -53,7 +47,7 @@
           <div class="form-group">
             <label>Sur quel port votre serveur doit-il fonctionner ? Il doit être unique pour éviter les conflits de
               port:</label>
-            <input type="number" class="form-control" formControlName="port" placeholder="8080"
+            <input type="number" class="form-control" formControlName="port"
               [ngClass]="{ 'is-invalid': submitted && f.port.errors }" />
             <div *ngIf="submitted && f.port.errors" class="invalid-feedback">
               <div *ngIf="f.port.errors.required"> port obligatoire </div>
@@ -63,9 +57,8 @@
           <div class="form-group">
             <label>Type de base de donne :</label>
             <select class="custom-select" formControlName="typebasededonne"
-              [ngClass]="{ 'is-invalid': submitted && f.typebasededonne.errors }" placeholder="MYSQL">
-              <option selected>Choisir type de base de donne...</option>
-              <option value="MYSQL">MYSQL</option>
+              [ngClass]="{ 'is-invalid': submitted && f.typebasededonne.errors }">
+              <option value="MYSQL" selected>MYSQL</option>
               <option value="postgresql">postgresql</option>
             </select>
 
@@ -77,7 +70,7 @@
           <div class="form-group">
             <label>Serveur de la base de donnée:</label>
             <input type="text" class="form-control" formControlName="lienserveur"
-              placeholder="localhost:3306" [ngClass]="{ 'is-invalid': submitted && f.lienserveur.errors }" />
+              [ngClass]="{ 'is-invalid': submitted && f.lienserveur.errors }" />
             <div *ngIf="submitted && f.lienserveur.errors" class="invalid-feedback">
               <div *ngIf="f.lienserveur.errors.required"> URL serveur obligatoire </div>
             </div>
@@ -86,7 +79,7 @@
           <div class="form-group">
             <label>Nom de la base de donnée :</label>
             <input type="text" class="form-control" formControlName="databaseName"
-              placeholder="dbName" [ngClass]="{ 'is-invalid': submitted && f.lienserveur.errors }" />
+             [ngClass]="{ 'is-invalid': submitted && f.lienserveur.errors }" />
             <div *ngIf="submitted && f.databaseName.errors" class="invalid-feedback">
               <div *ngIf="f.databaseName.errors.required"> Nom de la bdd obligatoire </div>
             </div>
@@ -95,7 +88,6 @@
           <div class="form-group">
             <label>nom d'urilisateur de base de données:</label>
             <input type="text" class="form-control" formControlName="nomutilisateur"
-              placeholder="saisir utilisateur de base donnees"
               [ngClass]="{ 'is-invalid': submitted && f.nomutilisateur.errors }" />
             <div *ngIf="submitted && f.nomutilisateur.errors" class="invalid-feedback">
               <div *ngIf="f.nomutilisateur.errors.required"> nom utilisateur obligatoire </div>
@@ -105,13 +97,8 @@
           <div class="form-group">
             <label>Mot de passe utilisateur base de donne :</label>
             <input type="password" class="form-control" formControlName="motdepasseutilisateur"
-              placeholder="saisir mot de passe" />
-            <!-- [ngClass]="{ 'is-invalid': submitted && f.motdepasseutilisateur.errors }"-->
-            <!-- <div *ngIf="submitted && f.motdepasseutilisateur.errors" class="invalid-feedback">
-            <div *ngIf="f.motdepasseutilisateur.errors.required">mot de passe obligatoire</div>
-            <div *ngIf="f.motdepasseutilisateur.errors.minlength">Le mot de passe doit être au moins de 8 caractères</div>
-        </div>
-      -->
+              placeholder="saisir mot de passe..." />
+     
           </div>
 
           <div class="form-group">
@@ -122,11 +109,31 @@
 
           </div>
 
-
-
           <div class="text-center">
-            <button type="submit" class="btn btn-primary mr-2">Envoyer</button>
+            <button type="submit" [disabled]="!generateurForm.valid" class="btn btn-primary mr-2" (click)="onSubmit()">Envoyer</button>
+           
+            <div class="backdrop" [ngStyle]="{'display':display}"></div>
+            <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
+             <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                 <div class="modal-header">
+                  <h4 class="model-title" style="align-items: center">Generating the application</h4>
+                  <app-loader></app-loader>
+                 </div>
+                 <div class="modal-body">
+                   <p>Model body text</p>
+                 </div>
+               </div><!-- /.modal-content -->
+             </div><!-- /.modal-dialog -->
+            </div><!-- /.modal !-->
             <button type="reset" class="btn btn-secondary" (click)="onReset()">Annuler</button>
+           
+           
+          <!--  <div *ngIf="loading" style="display: flex; align-items: center">
+              Creating, please wait <app-loader></app-loader>
+            </div>
+            -->
+            
           </div>
           <br>
           <br>
