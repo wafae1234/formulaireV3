@@ -1,6 +1,6 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <div><a href="http://dxc-technlogy-maroc.com/" class="navbar-brand">DXC.technology</a></div>
+      <div><a href="http://dxc-technlogy-maroc.com/" class="navbar-brand">DXC.technology Generator</a></div>
       <ul class="navbar-nav">
           <li><a class="nav-link" href="/formulaire">Application generator</a></li>
       </ul>
@@ -12,8 +12,10 @@
     <br>
     <div class="rox">
       <div class="col-md-6">
-        <h3>Formulaire du générateur</h3>
-        <br>
+        <h3>Formulaire du générateur</h3> 
+       <!--  -->
+       <br>
+        
         <form [formGroup]="generateurForm" (ngSubmit)="onSubmit()">
 
 
@@ -78,7 +80,7 @@
 
           <div class="form-group">
             <label>Nom de la base de donnée :</label>
-            <input type="text" class="form-control" formControlName="databaseName"
+            <input type="text" class="form-control" formControlName="databaseName" placeholder="Database Name ..."
              [ngClass]="{ 'is-invalid': submitted && f.lienserveur.errors }" />
             <div *ngIf="submitted && f.databaseName.errors" class="invalid-feedback">
               <div *ngIf="f.databaseName.errors.required"> Nom de la bdd obligatoire </div>
@@ -101,16 +103,44 @@
      
           </div>
 
+
+       
+            <!--<h2>Small Modal</h2>-->
+            <label>Vous devez tester la connexion avec la base de données : </label> &nbsp;
+            <button type="button" class="btn btn-success mr-2" (click)="onTest()" data-toggle="modal" data-target="#myModal">test</button>
+          
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                 <h2>Message</h2>
+                <div >
+                 {{variable}}
+                </div>
+                 
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+<br>
+<br>
+
+
+
+<!--
           <div class="form-group">
             <input type="checkbox" formControlName="acceptation" class="form-check-input"
               [ngClass]="{ 'is-invalid': submitted && f.acceptation.errors}" />
             <label for="acceptation" class="form-check-label">verifier vos information et accepter </label>
             <div *ngIf="submitted && f.acceptation.errors" class="invalid-feedback">accepter votre verification</div>
 
-          </div>
+          </div>  -->
 
           <div class="text-center">
-            <button type="submit" [disabled]="!generateurForm.valid" class="btn btn-primary mr-2" (click)="onSubmit()">Envoyer</button>
+            <button type="submit" [disabled]="!generateurForm.valid || !testCnx" class="btn btn-primary mr-2">Envoyer</button>
            
             <div class="backdrop" [ngStyle]="{'display':display}"></div>
             <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
@@ -120,28 +150,37 @@
                   <h4 class="model-title" style="align-items: center">Generating the application</h4>
                   <app-loader></app-loader>
                  </div>
-                 <div class="modal-body">
-                   <p>Model body text</p>
+                 <div *ngIf="loading===false" class="modal-body">
+                  <p> Generation succeeded ! 
+                     <!--<span> If you want to change properties labels click on Change button</span> -->            
+                  </p>
                  </div>
+          
                </div><!-- /.modal-content -->
              </div><!-- /.modal-dialog -->
             </div><!-- /.modal !-->
             <button type="reset" class="btn btn-secondary" (click)="onReset()">Annuler</button>
-           
-           
-          <!--  <div *ngIf="loading" style="display: flex; align-items: center">
-              Creating, please wait <app-loader></app-loader>
+            <br>
+            <br>
+            <div *ngIf="showForm">
+              <br>
+              
+         <!--    <app-tables [tables]='tables'
+                          [projectDirectory]='projectDirectory' ></app-tables> --> 
             </div>
-            -->
-            
           </div>
           <br>
           <br>
         </form>
         <br>
         <br>
+
+    <!--    <div class="Tables" *ngIf="showForm">
+          <app-tables></app-tables>
+          </div>
+        -->
       </div>
     </div>
   </div>
-  
+
 

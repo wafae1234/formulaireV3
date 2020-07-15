@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <h3>Si vous voulez changer les labels, voici les tables</h3>
+
+     <ul>
+        <li *ngFor="let table of tables" [class.selected]="table === selectedId">
+          <a [routerLink]="['/tableProperties', table]"> {{ table }}</a>
+        </li>
+      </ul>
+        
+  <!--   <ul>
+        <li *ngFor="let product of products">
+            <a [routerLink]="['/product/',product.id]"></a> <button (click)="gotoProperties('/tableProperties',table)">Go To Details</button>
+        </li>
+    </ul> --> 
+      
+      <!--<p *ngIf="tables.length > 3">There are many tables!</p>-->
+   
+    </div>
+  </div>
+</div>
+ 
